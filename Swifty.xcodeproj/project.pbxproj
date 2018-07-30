@@ -14,6 +14,7 @@
 		4A0A960C21077D3200D153A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4A0A960A21077D3200D153A8 /* LaunchScreen.storyboard */; };
 		4A0A961721077D3200D153A8 /* SwiftyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A961621077D3200D153A8 /* SwiftyTests.swift */; };
 		4A0A962221077D3200D153A8 /* SwiftyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A962121077D3200D153A8 /* SwiftyUITests.swift */; };
+		4A113959210F419300B8C833 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A113958210F419300B8C833 /* SecondVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		4A0A961D21077D3200D153A8 /* SwiftyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A0A962121077D3200D153A8 /* SwiftyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyUITests.swift; sourceTree = "<group>"; };
 		4A0A962321077D3200D153A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4A113958210F419300B8C833 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +83,7 @@
 				4A0A961521077D3200D153A8 /* SwiftyTests */,
 				4A0A962021077D3200D153A8 /* SwiftyUITests */,
 				4A0A95FF21077D3100D153A8 /* Products */,
+				4A0A96CA210780C900D153A8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,8 +102,9 @@
 			children = (
 				4A0A960121077D3200D153A8 /* AppDelegate.swift */,
 				4A0A960321077D3200D153A8 /* ViewController.swift */,
-				4A0A960521077D3200D153A8 /* Main.storyboard */,
+				4A113958210F419300B8C833 /* SecondVC.swift */,
 				4A0A960821077D3200D153A8 /* Assets.xcassets */,
+				4A0A960521077D3200D153A8 /* Main.storyboard */,
 				4A0A960A21077D3200D153A8 /* LaunchScreen.storyboard */,
 				4A0A960D21077D3200D153A8 /* Info.plist */,
 			);
@@ -123,6 +127,13 @@
 				4A0A962321077D3200D153A8 /* Info.plist */,
 			);
 			path = SwiftyUITests;
+			sourceTree = "<group>";
+		};
+		4A0A96CA210780C900D153A8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A0A960421077D3200D153A8 /* ViewController.swift in Sources */,
+				4A113959210F419300B8C833 /* SecondVC.swift in Sources */,
 				4A0A960221077D3200D153A8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,7 +439,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49Y6L4T525;
 				INFOPLIST_FILE = Swifty/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = omiroshn.Swifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -441,7 +455,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 49Y6L4T525;
 				INFOPLIST_FILE = Swifty/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = omiroshn.Swifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
