@@ -15,6 +15,7 @@
 		4A0A961721077D3200D153A8 /* SwiftyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A961621077D3200D153A8 /* SwiftyTests.swift */; };
 		4A0A962221077D3200D153A8 /* SwiftyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A0A962121077D3200D153A8 /* SwiftyUITests.swift */; };
 		4A113959210F419300B8C833 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A113958210F419300B8C833 /* SecondVC.swift */; };
+		4A22D3892110DCAA00689B06 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A22D3882110DCA900689B06 /* Student.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		4A0A962121077D3200D153A8 /* SwiftyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyUITests.swift; sourceTree = "<group>"; };
 		4A0A962321077D3200D153A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4A113958210F419300B8C833 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
+		4A22D3882110DCA900689B06 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				4A0A960121077D3200D153A8 /* AppDelegate.swift */,
 				4A0A960321077D3200D153A8 /* ViewController.swift */,
 				4A113958210F419300B8C833 /* SecondVC.swift */,
+				4A22D3882110DCA900689B06 /* Student.swift */,
 				4A0A960821077D3200D153A8 /* Assets.xcassets */,
 				4A0A960521077D3200D153A8 /* Main.storyboard */,
 				4A0A960A21077D3200D153A8 /* LaunchScreen.storyboard */,
@@ -273,6 +276,7 @@
 				4A0A960421077D3200D153A8 /* ViewController.swift in Sources */,
 				4A113959210F419300B8C833 /* SecondVC.swift in Sources */,
 				4A0A960221077D3200D153A8 /* AppDelegate.swift in Sources */,
+				4A22D3892110DCAA00689B06 /* Student.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

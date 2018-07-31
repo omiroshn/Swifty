@@ -74,8 +74,6 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     if json != nil && json!["login"] != nil {
                         self.user = json
-                        //print(self.user ?? nil)
-                        //parsingFunctions(data)
                         self.performSegue(withIdentifier: "SecondVC", sender: self)
                     } else {
                         self.loginField.text = ""
@@ -148,6 +146,7 @@ class ViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let secondVC = segue.destination as? SecondVC else { return }
+        secondVC.token = self.token?.access_token
         secondVC.user = self.user
     }
 }
