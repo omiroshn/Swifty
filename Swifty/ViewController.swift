@@ -19,12 +19,14 @@ class ViewController: UIViewController {
     let secret = "1acb18d21559f4bf503bd77e2a6ddf620aefe3c5c08c6e0ea7a679f0ed390674"
     var token: Token?
     var user: NSDictionary?
+    var coalitions: [NSDictionary]?
+    var user_id: Int?
     var effect: UIVisualEffect!
     
     struct Token: Codable {
         var access_token: String?
         var created_at: Int?
-        var expires_int: Int?
+        var expires_in: Int?
         var scope: String?
         var token_type: String?
     }
@@ -40,9 +42,9 @@ class ViewController: UIViewController {
         self.view.sendSubview(toBack: VisualEffectView)
         errorView.layer.cornerRadius = 5
         
-        getToken { (token, error) in
-            self.token = token
-        }
+//        getToken { (token, error) in
+//            self.token = token
+//        }
     }
     
     func getToken(completionHandler:@escaping (Token?, Error?)->Void) {
@@ -55,7 +57,6 @@ class ViewController: UIViewController {
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            
             guard let data = data else { return }
             do {
                 let token = try JSONDecoder().decode(Token.self, from: data)
@@ -69,18 +70,26 @@ class ViewController: UIViewController {
     @IBAction func getTapped(_ sender: UIButton) {
         
         let login = loginField.text!
-        if login != "" {
-            makeRequest(login: login) { (json, error) in
-                DispatchQueue.main.async {
+        if login != "", login != "me" {
+            getToken(completionHandler: { (token, error) in
+                self.token = token
+                self.makeRequest(login: login) { (json, error) in
                     if json != nil && json!["login"] != nil {
                         self.user = json
-                        self.performSegue(withIdentifier: "SecondVC", sender: self)
+                        self.getCoalition(completionHandler: { (coalition, error) in
+                            self.coalitions = coalition
+                            DispatchQueue.main.async {
+                                self.performSegue(withIdentifier: "SecondVC", sender: self)
+                            }
+                        })
                     } else {
-                        self.loginField.text = ""
-                        self.animatePopUp()
+                        DispatchQueue.main.async {
+                            self.loginField.text = ""
+                            self.animatePopUp()
+                        }
                     }
                 }
-            }
+            })
         } else {
             self.animatePopUp()
         }
@@ -96,7 +105,6 @@ class ViewController: UIViewController {
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            
             guard let data = data else { return }
             do {
                 let user = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
@@ -107,12 +115,37 @@ class ViewController: UIViewController {
         }.resume()
     }
     
+    func getCoalition(completionHandler:@escaping ([NSDictionary]?, Error?)->Void)  {
+        
+        if let campus_users = self.user?["campus_users"] as? [NSDictionary] {
+            if let user_id = campus_users[0]["user_id"] as? Int {
+                self.user_id = user_id
+            }
+        }
+        guard let url = URL(string: "https://api.intra.42.fr/v2/users/" + String(self.user_id!) + "/coalitions") else { return }
+        let bearer = "Bearer " + (self.token?.access_token)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(bearer, forHTTPHeaderField: "Authorization")
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, error) in
+            guard let data = data else { return }
+            do {
+                let array = try JSONSerialization.jsonObject(with: data, options: []) as? [NSDictionary]
+                completionHandler(array, nil)
+            } catch {
+                completionHandler(nil, error)
+            }
+        }.resume()
+    }
+    
     func animatePopUp() {
         self.loginField.resignFirstResponder()
         self.view.bringSubview(toFront: VisualEffectView)
         self.view.addSubview(errorView)
-        errorView.center = self.view.center
         
+        errorView.center = self.view.center
         errorView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
         errorView.alpha = 0
         
@@ -146,8 +179,8 @@ class ViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let secondVC = segue.destination as? SecondVC else { return }
-        secondVC.token = self.token?.access_token
         secondVC.user = self.user
+        secondVC.coalitions = self.coalitions
     }
 }
 

@@ -12,44 +12,51 @@ class Student {
     
     var login: String?
     var displayname: String?
-    var image: String?
+    var image_url: String?
+    var coalition_name: String?
     var email: String?
     var phone: String?
-    var bearer: String!
+    var location: String?
+    var wallet: String?
+    var correctionPoints: String?
+    var level: String?
     
-    private var user_id: Int?
-    var coalitions: [NSDictionary]?
-    
-    //var wallet: Int?
-    //var correctionPoints: Int?
-    //var level: Float?
-    
-    init(user: NSDictionary, bearer: String) {
+    init(user: NSDictionary, coalitions: [NSDictionary]) {
         
-        self.bearer = bearer
         if let displayname = user["displayname"] as? String {
             self.displayname = displayname
         }
         if let image = user["image_url"] as? String {
-            self.image = image
+            self.image_url = image
         }
         if let email = user["email"] as? String {
             self.email = email
+        } else {
+            self.email = ""
         }
         if let phone = user["phone"] as? String {
             self.phone = phone
+        } else {
+            self.phone = ""
         }
-        
-        if let campus_users = user["campus_users"] as? [NSDictionary] {
-            if let user_id = campus_users[0]["user_id"] as? Int {
-                self.user_id = user_id
-            }
+        if let location = user["location"] as? String {
+            self.location = "Avaliable: " + location
+        } else {
+            self.location = "Unavaliable"
+        }
+        if let wallet = user["wallet"] as? Int {
+            self.wallet = String(wallet)
+        }
+        if let correctionPoints = user["correction_point"] as? Int {
+            self.correctionPoints = String(correctionPoints)
         }
         
         if let cursus_users = user["cursus_users"] as? [NSDictionary] {
             var course = NSDictionary()
             for cursus in cursus_users {
                 if (cursus.value(forKey: "cursus_id") as? Int) == 1 {
+                    course = cursus
+                } else {
                     course = cursus
                 }
             }
@@ -58,48 +65,21 @@ class Student {
                     self.login = login
                 }
             }
-        }
-        DispatchQueue.main.async {
-            self.setCoalition { (coalitions, error) in
-                self.coalitions = coalitions
-                print(self.coalitions)
-                print(type(of: self.coalitions))
+            
+            if let level = course["level"] as? Float {
+                self.level = String(format: "%.2f", level)
+            } else {
+                self.level = "0.0"
             }
-            print(self.coalitions)
-            print(type(of: self.coalitions))
+        }
+
+        if coalitions.count != 0 {
+            var coalition = NSDictionary()
+            coalition = coalitions[0]
+            if let coalition_name = coalition["name"] as? String {
+                self.coalition_name = coalition_name
+            }
         }
     }
     
-    func setCoalition(completionHandler:@escaping ([NSDictionary]?, Error?)->Void)  {
-        guard let url = URL(string: "https://api.intra.42.fr/v2/users/" + String(self.user_id!) + "/coalitions") else { return }
-        let bearer = "Bearer " + self.bearer
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(bearer, forHTTPHeaderField: "Authorization")
-
-        let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-
-            guard let data = data else { return }
-            do {
-                if let array = try JSONSerialization.jsonObject(with: data, options: []) as? [NSDictionary] {
-                    completionHandler(array, nil)
-                }
-            } catch {
-                completionHandler(nil, error)
-            }
-        }.resume()
-    }
-    
-    func getCoalition() -> NSDictionary {
-        var coalition = NSDictionary()
-        for c in self.coalitions! {
-            if (c.value(forKey: "user_id") as? Int) == self.user_id {
-                coalition = c
-            }
-        }
-        print(coalition)
-        print(type(of: coalition))
-        return coalition
-    }
 }
