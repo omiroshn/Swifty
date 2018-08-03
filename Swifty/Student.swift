@@ -21,6 +21,7 @@ class Student {
     var correctionPoints: String?
     var level: String?
     var isStaff: Bool?
+    var skills: [(String, String)]?
     
     init(user: NSDictionary, coalitions: [NSDictionary]) {
         
@@ -56,11 +57,13 @@ class Student {
         }
         
         if let cursus_users = user["cursus_users"] as? [NSDictionary] {
+            var mainCourse = false
             var course = NSDictionary()
             for cursus in cursus_users {
                 if (cursus.value(forKey: "cursus_id") as? Int) == 1 {
                     course = cursus
-                } else {
+                    mainCourse = true
+                } else if mainCourse == false {
                     course = cursus
                 }
             }
@@ -75,6 +78,20 @@ class Student {
             } else {
                 self.level = "0.0"
             }
+            
+            /*if let skills = course["skills"] as? [NSDictionary] {
+                for s in skills {
+                    var tuples = ("", "")
+                    if let name = s["name"] as? String {
+                        tuples.0 = name
+                    }
+                    if let level = s["level"] as? Float {
+                        tuples.1 = String(format: "%.2f", level)
+                    }
+                    self.skills?.append(tuples)
+                }
+            }
+            print(self.skills)*/
         }
 
         if coalitions.count != 0 {
@@ -84,6 +101,8 @@ class Student {
                 self.coalition_name = coalition_name
             }
         }
+        
+        
     }
     
 }

@@ -86,7 +86,10 @@ class SecondVC: UIViewController {
         }
         if let level = student.level {
             self.drawHorizontalChart(level: level)
-            levelLabel.text = "level " + level
+            levelLabel.textColor = UIColor.white
+            let v1 = level.split(separator: ".")[0]
+            let v2 = level.split(separator: ".")[1]
+            levelLabel.text = "Level " + v1 + " - " + v2 + "%"
         }
     }
     
