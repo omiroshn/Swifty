@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import Charts
+import DDSpiderChart
 
 class SecondVC: UIViewController {
     
@@ -21,6 +23,12 @@ class SecondVC: UIViewController {
     @IBOutlet weak var correctionLabel: UILabel!
     @IBOutlet weak var walletLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var staffLabel: UILabel!
+    @IBOutlet weak var levelLabel: UILabel!
+    
+    @IBOutlet weak var horizontalLevelBar: HorizontalBarChartView!
+//    @IBOutlet weak var spiderChartView: DDSpiderChartView!
+    
     
     var user: NSDictionary?
     var coalitions: [NSDictionary]?
@@ -30,6 +38,11 @@ class SecondVC: UIViewController {
         
         let student = Student(user: user!, coalitions: coalitions!)
 
+        if (student.isStaff == true) {
+            staffLabel.isHidden = false
+        } else {
+            staffLabel.isHidden = true
+        }
         navigationName.title = student.displayname
         imageView.layer.cornerRadius = imageView.frame.width/4
         imageView.clipsToBounds = true
@@ -58,19 +71,78 @@ class SecondVC: UIViewController {
         }
         
         loginLabel.text = student.login
+        locationLabel.text = student.location
         if let email = student.email {
             emailLabel.text = "✉️: " + email
         }
         if let phone = student.phone {
             phoneLabel.text = "📞: " + phone
         }
-        if let points = student.correctionPoints {
-            correctionLabel.text = "Points: " + points
-        }
         if let wallet = student.wallet {
             walletLabel.text = "Wallet: " + wallet
         }
-        locationLabel.text = student.location
+        if let points = student.correctionPoints {
+            correctionLabel.text = "Points: " + points
+        }
+        if let level = student.level {
+            self.drawHorizontalChart(level: level)
+            levelLabel.text = "level " + level
+        }
+    }
+    
+    func drawHorizontalChart(level: String) {
+    
+        horizontalLevelBar.drawBarShadowEnabled = true
+        horizontalLevelBar.drawValueAboveBarEnabled = true
+        horizontalLevelBar.maxVisibleCount = 100
+        horizontalLevelBar.chartDescription?.text = ""
+        horizontalLevelBar.scaleXEnabled = false
+        horizontalLevelBar.scaleYEnabled = false
+        horizontalLevelBar.dragEnabled = false
+
+        let xAxis  = horizontalLevelBar.xAxis
+        xAxis.drawAxisLineEnabled = false
+        xAxis.drawGridLinesEnabled = false
+        xAxis.drawLabelsEnabled = false
+
+        let leftAxis = horizontalLevelBar.leftAxis
+        leftAxis.drawAxisLineEnabled = false
+        leftAxis.drawGridLinesEnabled = false
+        leftAxis.axisMinimum = 0.0;
+        leftAxis.axisMaximum = 100;
+        leftAxis.drawLabelsEnabled = false
+
+        let rightAxis = horizontalLevelBar.rightAxis
+        rightAxis.enabled = false
+
+        let l = horizontalLevelBar.legend
+        l.enabled =  false
+        setDataCount(level: level)
+
+    }
+
+    func setDataCount(level: String) {
+
+        var yVals = [BarChartDataEntry]()
+        let level = Double(String(level).split(separator: ".")[1])!
+        yVals.append(BarChartDataEntry(x: 0, y: level))
+        var set1 : BarChartDataSet!
+
+        if let count = horizontalLevelBar.data?.dataSetCount, count > 0 {
+            set1 = horizontalLevelBar.data?.dataSets[0] as! BarChartDataSet
+            set1.values = yVals
+            horizontalLevelBar.data?.notifyDataChanged()
+            horizontalLevelBar.notifyDataSetChanged()
+        } else {
+            set1 = BarChartDataSet(values: yVals, label: nil)
+            set1.drawValuesEnabled = false
+            var dataSets = [BarChartDataSet]()
+            set1.colors = [NSUIColor(red: 0.0/255.0, green: 186.0/255.0, blue: 188.0/255.0, alpha: 1.0)]
+            dataSets.append(set1)
+            let data = BarChartData(dataSets: dataSets)
+            horizontalLevelBar.data = data
+            horizontalLevelBar.animate(yAxisDuration: 1.0, easingOption: .easeInOutQuart)
+        }
     }
     
 }

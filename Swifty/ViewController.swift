@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var loginField: UITextField!
     @IBOutlet weak var VisualEffectView: UIVisualEffectView!
     @IBOutlet var errorView: UIView!
-    
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
     let uid = "b45b4dfbed422177c9877185d4b9103d3a10eef5a4e8adb0d55aa1c58e350e18"
     let secret = "1acb18d21559f4bf503bd77e2a6ddf620aefe3c5c08c6e0ea7a679f0ed390674"
@@ -42,9 +42,8 @@ class ViewController: UIViewController {
         self.view.sendSubview(toBack: VisualEffectView)
         errorView.layer.cornerRadius = 5
         
-//        getToken { (token, error) in
-//            self.token = token
-//        }
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
     }
     
     func getToken(completionHandler:@escaping (Token?, Error?)->Void) {
@@ -71,6 +70,9 @@ class ViewController: UIViewController {
         
         let login = loginField.text!
         if login != "", login != "me" {
+            DispatchQueue.main.async {
+                self.startActivityIndicator()
+            }
             getToken(completionHandler: { (token, error) in
                 self.token = token
                 self.makeRequest(login: login) { (json, error) in
@@ -79,11 +81,13 @@ class ViewController: UIViewController {
                         self.getCoalition(completionHandler: { (coalition, error) in
                             self.coalitions = coalition
                             DispatchQueue.main.async {
+                                self.stopActivityIndicator()
                                 self.performSegue(withIdentifier: "SecondVC", sender: self)
                             }
                         })
                     } else {
                         DispatchQueue.main.async {
+                            self.stopActivityIndicator()
                             self.loginField.text = ""
                             self.animatePopUp()
                         }
@@ -138,6 +142,18 @@ class ViewController: UIViewController {
                 completionHandler(nil, error)
             }
         }.resume()
+    }
+
+    func startActivityIndicator() {
+        activityIndicator.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func stopActivityIndicator() {
+        activityIndicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func animatePopUp() {

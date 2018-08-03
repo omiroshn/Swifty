@@ -20,6 +20,7 @@ class Student {
     var wallet: String?
     var correctionPoints: String?
     var level: String?
+    var isStaff: Bool?
     
     init(user: NSDictionary, coalitions: [NSDictionary]) {
         
@@ -45,10 +46,13 @@ class Student {
             self.location = "Unavaliable"
         }
         if let wallet = user["wallet"] as? Int {
-            self.wallet = String(wallet)
+            self.wallet = String(wallet) + "₳"
         }
         if let correctionPoints = user["correction_point"] as? Int {
             self.correctionPoints = String(correctionPoints)
+        }
+        if let staff = user["staff?"] as? Bool {
+            self.isStaff = staff
         }
         
         if let cursus_users = user["cursus_users"] as? [NSDictionary] {
