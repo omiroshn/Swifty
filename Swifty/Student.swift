@@ -21,7 +21,8 @@ class Student {
     var correctionPoints: String?
     var level: String?
     var isStaff: Bool?
-    var skills: [(String, String)]?
+    var skills: [(String, String)] = []
+    var projects: [NSDictionary]?
     
     init(user: NSDictionary, coalitions: [NSDictionary]) {
         
@@ -50,12 +51,16 @@ class Student {
             self.wallet = String(wallet) + "₳"
         }
         if let correctionPoints = user["correction_point"] as? Int {
-            self.correctionPoints = String(correctionPoints)
+            if correctionPoints > 5 {
+                self.correctionPoints = String(correctionPoints) + "♻"
+            } else {
+                self.correctionPoints = String(correctionPoints)
+            }
         }
         if let staff = user["staff?"] as? Bool {
             self.isStaff = staff
         }
-        
+
         if let cursus_users = user["cursus_users"] as? [NSDictionary] {
             var mainCourse = false
             var course = NSDictionary()
@@ -79,19 +84,22 @@ class Student {
                 self.level = "0.0"
             }
             
-            /*if let skills = course["skills"] as? [NSDictionary] {
-                for s in skills {
+            if let skills = course["skills"] as? [NSDictionary] {
+                for triplet in skills {
                     var tuples = ("", "")
-                    if let name = s["name"] as? String {
+                    if let name = triplet["name"] as? String {
                         tuples.0 = name
                     }
-                    if let level = s["level"] as? Float {
+                    if let level = triplet["level"] as? Float {
                         tuples.1 = String(format: "%.2f", level)
                     }
-                    self.skills?.append(tuples)
+                    self.skills.append(tuples)
                 }
             }
-            print(self.skills)*/
+            
+            /*let projects = course["projects_users"]
+            print(projects)
+            print(type(of: projects))*/
         }
 
         if coalitions.count != 0 {
@@ -101,8 +109,21 @@ class Student {
                 self.coalition_name = coalition_name
             }
         }
-        
-        
     }
+    
+    func returnSkillsForRadar() -> [(String, String)] {
+        var ret : [(String, String)] = []
+        for s in self.skills {
+            if s.0 == "Object-oriented programming" {
+                let tmp = s.0.replacingOccurrences(of: "-", with: "-\n", options: .literal, range: nil)
+                ret.append((tmp.replacingOccurrences(of: " ", with: "\n", options: .literal, range: nil), s.1))
+            }
+            else {
+                ret.append((s.0.replacingOccurrences(of: " ", with: "\n", options: .literal, range: nil), s.1))
+            }
+        }
+        return ret
+    }
+
     
 }

@@ -11,7 +11,7 @@ import UIKit
 import Charts
 import DDSpiderChart
 
-class SecondVC: UIViewController {
+class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var navigationName: UINavigationItem!
     @IBOutlet weak var imageView: UIImageView!
@@ -27,14 +27,20 @@ class SecondVC: UIViewController {
     @IBOutlet weak var levelLabel: UILabel!
     
     @IBOutlet weak var horizontalLevelBar: HorizontalBarChartView!
-//    @IBOutlet weak var spiderChartView: DDSpiderChartView!
+    @IBOutlet weak var spiderChartView: DDSpiderChartView!
     
+    @IBOutlet weak var tableView: UITableView!
+    let identifier = "cell"
     
     var user: NSDictionary?
     var coalitions: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: identifier)
         
         let student = Student(user: user!, coalitions: coalitions!)
 
@@ -89,8 +95,33 @@ class SecondVC: UIViewController {
             levelLabel.textColor = UIColor.white
             let v1 = level.split(separator: ".")[0]
             let v2 = level.split(separator: ".")[1]
-            levelLabel.text = "Level " + v1 + " - " + v2 + "%"
+            levelLabel.text = "Level " + v1 + " - " + String(describing: Int(v2)!) + "%"
         }
+        
+        self.drawSpiderChart(student: student)
+    }
+    
+    func drawSpiderChart(student: Student) {
+        student.skills.sort(by: {$0 > $1})
+        spiderChartView.color = .gray
+        var val : [Float] = []
+        var name : [String] = []
+        let skills = student.returnSkillsForRadar()
+        for s in skills {
+            name.append(s.0)
+            val.append(Float(s.1)! / 20)
+        }
+        spiderChartView.axes = name.map { attributedAxisLabel($0) }
+        spiderChartView.addDataSet(values: val, color: UIColor(red: 8.0/255.0, green: 160.0/255.0, blue: 133.0/255.0, alpha: 1.0))
+    }
+    
+    func attributedAxisLabel(_ label: String) -> NSAttributedString {
+        let style = NSMutableParagraphStyle()
+        style.alignment = NSTextAlignment.left
+        
+        let attributedString = NSMutableAttributedString()
+        attributedString.append(NSAttributedString(string: label, attributes: [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont(name: "ArialMT", size: 8)!, NSAttributedStringKey.paragraphStyle: style]))
+        return attributedString
     }
     
     func drawHorizontalChart(level: String) {
@@ -148,4 +179,29 @@ class SecondVC: UIViewController {
         }
     }
     
+    //MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 20
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return 1
+        default:
+            break
+        }
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        cell.textLabel?.text = "section = \(indexPath.section) row = \(indexPath.row)"
+        return cell
+    }
+    
+    //MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 70.0
+    }
 }

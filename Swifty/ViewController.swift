@@ -23,6 +23,10 @@ class ViewController: UIViewController {
     var user_id: Int?
     var effect: UIVisualEffect!
     
+    var timer = Timer()
+    var seconds = 0
+    var timerIsOn = false
+    
     struct Token: Codable {
         var access_token: String?
         var created_at: Int?
@@ -48,25 +52,47 @@ class ViewController: UIViewController {
     
     func getToken(completionHandler:@escaping (Token?, Error?)->Void) {
         
-        guard let url = URL(string: "https://api.intra.42.fr/oauth/token") else { return }
-        let parameters = "grant_type=client_credentials&client_id=" + uid + "&client_secret=" + secret
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.httpBody = parameters.data(using: .utf8)
-        
-        let session = URLSession.shared
-        session.dataTask(with: request) { (data, response, error) in
-            guard let data = data else { return }
-            do {
-                let token = try JSONDecoder().decode(Token.self, from: data)
-                completionHandler(token, nil)
-            } catch {
-                completionHandler(nil, error)
+        if timerIsOn == false {
+            seconds = 0
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
+            timerIsOn = true
+            guard let url = URL(string: "https://api.intra.42.fr/oauth/token") else { return }
+            let parameters = "grant_type=client_credentials&client_id=" + uid + "&client_secret=" + secret
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.httpBody = parameters.data(using: .utf8)
+            
+            let session = URLSession.shared
+            session.dataTask(with: request) { (data, response, error) in
+                guard let data = data else { return }
+                do {
+                    let token = try JSONDecoder().decode(Token.self, from: data)
+                    completionHandler(token, nil)
+                } catch {
+                    completionHandler(nil, error)
+                }
+            }.resume()
+        } else if seconds < (token?.expires_in)! {
+            completionHandler(token, nil)
+        }
+    }
+    
+    @objc func updateTimer() {
+        seconds += 1
+        if let token = self.token?.expires_in {
+            if seconds >= token {
+                seconds = 0
+                timerIsOn = false
+                timer.invalidate()
             }
-        }.resume()
+        }
     }
     
     @IBAction func getTapped(_ sender: UIButton) {
+        self.searchLogin()
+    }
+    
+    func searchLogin() {
         
         let login = loginField.text!
         if login != "", login != "me" {
@@ -204,6 +230,7 @@ extension ViewController : UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.searchLogin()
         return true
     }
 }
