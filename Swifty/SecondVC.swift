@@ -11,6 +11,11 @@ import UIKit
 import Charts
 import DDSpiderChart
 
+struct CellData {
+    var title: String
+    var score: String
+}
+
 class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var navigationName: UINavigationItem!
@@ -30,17 +35,17 @@ class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var spiderChartView: DDSpiderChartView!
     
     @IBOutlet weak var tableView: UITableView!
-    let identifier = "cell"
+    var cells = [CellData]()
     
     var user: NSDictionary?
     var coalitions: [NSDictionary]?
     
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: identifier)
         
         let student = Student(user: user!, coalitions: coalitions!)
 
@@ -99,6 +104,9 @@ class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         }
         
         self.drawSpiderChart(student: student)
+        for p in student.projects {
+            cells.append(CellData(title: p.0, score: p.1))
+        }
     }
     
     func drawSpiderChart(student: Student) {
@@ -180,28 +188,22 @@ class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     //MARK: - UITableViewDataSource
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 20
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        default:
-            break
-        }
-        return 1
+        return cells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        cell.textLabel?.text = "section = \(indexPath.section) row = \(indexPath.row)"
+        let data = cells[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCellId") as! CustomCell
+        cell.titleLabel.numberOfLines = 0
+        cell.titleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
+        cell.updateCustomSell(data: data)
         return cell
     }
     
     //MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0
+        return 50.0
     }
 }

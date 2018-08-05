@@ -22,7 +22,7 @@ class Student {
     var level: String?
     var isStaff: Bool?
     var skills: [(String, String)] = []
-    var projects: [NSDictionary]?
+    var projects: [(String, String)] = []
     
     init(user: NSDictionary, coalitions: [NSDictionary]) {
         
@@ -96,10 +96,39 @@ class Student {
                     self.skills.append(tuples)
                 }
             }
-            
-            /*let projects = course["projects_users"]
-            print(projects)
-            print(type(of: projects))*/
+        }
+        
+        
+        if let projects = user["projects_users"] as? [NSDictionary] {
+            for p in projects {
+                var tuples = ("", "")
+                var parent_id: Int? = nil
+                var slug: String? = nil
+                if let project = p["project"] as? NSDictionary {
+                    if let name = project["name"] as? String {
+                        tuples.0 = name
+                    }
+                    if let pid = project["parent_id"] as? Int {
+                        parent_id = pid
+                    }
+                    if let s = project["slug"] as? String {
+                        slug = s
+                    }
+                }
+                if let mark = p["final_mark"] as? Int {
+                    tuples.1 = String(mark)
+                } else {
+                    tuples.1 = "-"
+                }
+                
+                if tuples.0 != "" && (parent_id == nil || parent_id == 61) {
+                    if parent_id != 48 && parent_id != 62 {
+                        if tuples.0 != "Rushes" && slug?.range(of: "piscine-c") == nil {
+                            self.projects.append(tuples)
+                        }
+                    }
+                }
+            }
         }
 
         if coalitions.count != 0 {

@@ -19,6 +19,7 @@
 		4A113959210F419300B8C833 /* SecondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A113958210F419300B8C833 /* SecondVC.swift */; };
 		4A1E645B21137B100037E10B /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1E645C21137B100037E10B /* Charts.framework */; };
 		4A22D3892110DCAA00689B06 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A22D3882110DCA900689B06 /* Student.swift */; };
+		4AE6B8C921170497007ADD0E /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE6B8C821170497007ADD0E /* CustomCell.swift */; };
 		F58B0EA98839B08EDE8021E3 /* Pods_SwiftyUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D162BCF1135C091BA671BDF /* Pods_SwiftyUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,19 +39,6 @@
 			remoteInfo = Swifty;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		4A1E646021137B300037E10B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		2D162BCF1135C091BA671BDF /* Pods_SwiftyUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +62,7 @@
 		4A113958210F419300B8C833 /* SecondVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondVC.swift; sourceTree = "<group>"; };
 		4A1E645C21137B100037E10B /* Charts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Charts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A22D3882110DCA900689B06 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		4AE6B8C821170497007ADD0E /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		86CF45B0480B0DF5C55946C2 /* Pods-Swifty.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swifty.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swifty/Pods-Swifty.release.xcconfig"; sourceTree = "<group>"; };
 		B781D088F3CB21E63F549A82 /* Pods-SwiftyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftyTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftyTests/Pods-SwiftyTests.release.xcconfig"; sourceTree = "<group>"; };
 		D054EBA0EAA0FF623B2B6759 /* Pods_SwiftyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -137,6 +126,7 @@
 				4A0A960121077D3200D153A8 /* AppDelegate.swift */,
 				4A0A960321077D3200D153A8 /* ViewController.swift */,
 				4A22D3882110DCA900689B06 /* Student.swift */,
+				4AE6B8C821170497007ADD0E /* CustomCell.swift */,
 				4A113958210F419300B8C833 /* SecondVC.swift */,
 				4A0A960821077D3200D153A8 /* Assets.xcassets */,
 				4A0A960521077D3200D153A8 /* Main.storyboard */,
@@ -199,8 +189,7 @@
 				4A0A95FA21077D3100D153A8 /* Sources */,
 				4A0A95FB21077D3100D153A8 /* Frameworks */,
 				4A0A95FC21077D3100D153A8 /* Resources */,
-				4A1E646021137B300037E10B /* Embed Frameworks */,
-				411B713CD8B7BBA72B08DCD8 /* [CP] Embed Pods Frameworks */,
+				36D7ABBD8FDBBA1BFFD8D3C0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -341,7 +330,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		411B713CD8B7BBA72B08DCD8 /* [CP] Embed Pods Frameworks */ = {
+		36D7ABBD8FDBBA1BFFD8D3C0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -406,6 +395,7 @@
 			files = (
 				4A0A960421077D3200D153A8 /* ViewController.swift in Sources */,
 				4A113959210F419300B8C833 /* SecondVC.swift in Sources */,
+				4AE6B8C921170497007ADD0E /* CustomCell.swift in Sources */,
 				4A0A960221077D3200D153A8 /* AppDelegate.swift in Sources */,
 				4A22D3892110DCAA00689B06 /* Student.swift in Sources */,
 			);
