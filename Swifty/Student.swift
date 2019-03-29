@@ -78,20 +78,27 @@ class Student {
                 }
             }
             
-            if let level = course["level"] as? Float {
+            if let level = course["level"] as? Double {
                 self.level = String(format: "%.2f", level)
             } else {
                 self.level = "0.0"
             }
             
             if let skills = course["skills"] as? [NSDictionary] {
+                
                 for triplet in skills {
                     var tuples = ("", "")
                     if let name = triplet["name"] as? String {
                         tuples.0 = name
+                    } else {
+                        tuples.0 = "Empty"
+                        print("Empty name!!")
                     }
-                    if let level = triplet["level"] as? Float {
+                    if let level = triplet["level"] as? Double {
                         tuples.1 = String(format: "%.2f", level)
+                    } else {
+                        tuples.1 = "0.0"
+                        print("Empty level!!")
                     }
                     self.skills.append(tuples)
                 }

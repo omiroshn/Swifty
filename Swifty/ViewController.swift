@@ -43,11 +43,11 @@ class ViewController: UIViewController {
         
         effect = VisualEffectView.effect
         VisualEffectView.effect = nil
-        self.view.sendSubview(toBack: VisualEffectView)
+        self.view.sendSubviewToBack(VisualEffectView)
         errorView.layer.cornerRadius = 5
         
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        activityIndicator.style = UIActivityIndicatorView.Style.gray
     }
     
     func getToken(completionHandler:@escaping (Token?, Error?)->Void) {
@@ -184,7 +184,7 @@ class ViewController: UIViewController {
     
     func animatePopUp() {
         self.loginField.resignFirstResponder()
-        self.view.bringSubview(toFront: VisualEffectView)
+        self.view.bringSubviewToFront(VisualEffectView)
         self.view.addSubview(errorView)
         
         errorView.center = self.view.center
@@ -199,7 +199,7 @@ class ViewController: UIViewController {
     }
     
     func animatePopOut() {
-        self.view.sendSubview(toBack: VisualEffectView)
+        self.view.sendSubviewToBack(VisualEffectView)
         UIView.animate(withDuration: 0.3, animations: {
             self.errorView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
             self.errorView.alpha = 0

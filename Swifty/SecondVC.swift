@@ -128,7 +128,7 @@ class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         style.alignment = NSTextAlignment.left
         
         let attributedString = NSMutableAttributedString()
-        attributedString.append(NSAttributedString(string: label, attributes: [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont(name: "ArialMT", size: 8)!, NSAttributedStringKey.paragraphStyle: style]))
+        attributedString.append(NSAttributedString(string: label, attributes: [NSAttributedString.Key.foregroundColor: UIColor.black, NSAttributedString.Key.font: UIFont(name: "ArialMT", size: 8)!, NSAttributedString.Key.paragraphStyle: style]))
         return attributedString
     }
     
@@ -171,7 +171,7 @@ class SecondVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         var set1 : BarChartDataSet!
 
         if let count = horizontalLevelBar.data?.dataSetCount, count > 0 {
-            set1 = horizontalLevelBar.data?.dataSets[0] as! BarChartDataSet
+            set1 = horizontalLevelBar.data?.dataSets[0] as? BarChartDataSet
             set1.values = yVals
             horizontalLevelBar.data?.notifyDataChanged()
             horizontalLevelBar.notifyDataSetChanged()

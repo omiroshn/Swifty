@@ -23,7 +23,7 @@ extension NSString: DrawableString {
         style.alignment = .center
 
         #if swift(>=4.0)
-            draw(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.paragraphStyle: style], context: nil)
+            draw(with: rect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.paragraphStyle: style], context: nil)
         #else
         draw(with: rect, options: .usesLineFragmentOrigin, attributes: [NSParagraphStyleAttributeName: style], context: nil)
         #endif

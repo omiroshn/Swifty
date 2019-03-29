@@ -63,7 +63,7 @@ import UIKit
     }
 
     public func removeDataSetView(_ view: UIView) {
-        guard let index = views.index(where: { $0 === view }) else { return }
+        guard let index = views.firstIndex(where: { $0 === view }) else { return }
         views.remove(at: index)
         view.removeFromSuperview()
     }
